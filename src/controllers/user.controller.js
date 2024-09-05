@@ -1,4 +1,8 @@
 import {StatusCodes} from 'http-status-codes';
+import pino from 'pino';
+
+const logger = pino();
+
 import userServices from '../services/user.service';
 
 const STATUS={
@@ -34,6 +38,7 @@ const getUser=(req,res)=>{
     const id=parseInt(req.params.id,10);
     const user = userServices.getUser(id);
     if(user){
+        logger.info(`Retrieving ${id} user`)
         return res.status(StatusCodes.OK).send(
             {
                 status:STATUS.SUCCESS,
@@ -65,6 +70,7 @@ const addUser = (req,res)=>{
             message:"name is required"});
     }*/
     //data.push(req.body);
+    logger.info('Creating a user')
     res.status(StatusCodes.CREATED).send({
         status:STATUS.SUCCESS,
         user:addedUser,
@@ -86,8 +92,9 @@ const updatedUser=userServices.updateUser(id,user);
 if (updatedUser){
     return res.status(StatusCodes.OK).send({
         status:STATUS.SUCCESS,
-        user:updatedUser,
+        user:updatedUser,   
 });
+    logger.info(`Updating ${id} user`)
 }
 else{
     return res.status(StatusCodes.NOT_FOUND).send({
@@ -115,6 +122,7 @@ const removeUser=(req,res)=>{
             status:STATUS.SUCCESS,
             message:`User ${id} has been deleted`
         });
+        logger.info(`Removing ${id} user`)
     }
     else{
         return res.status(StatusCodes.NOT_FOUND).send({
