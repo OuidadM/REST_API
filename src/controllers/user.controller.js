@@ -19,6 +19,7 @@ const STATUS={
 const getAllUsers=(req,res)=>{
     const users = userServices.getAllUsers();
     if(users.length){
+        logger.info('Getting all users')
         return res.status(StatusCodes.OK).send(users);
     }
     return res.status(StatusCodes.NOT_FOUND).send({
