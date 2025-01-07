@@ -6,8 +6,8 @@ const logger = pino();
 import userServices from '../services/user.service';
 
 const STATUS={
-    SUCCESS:'ok',
-    FAILURE:'NO'
+    SUCCESS:true,
+    FAILURE:false
 }
 
 /**
@@ -40,12 +40,7 @@ const getUser=(req,res)=>{
     const user = userServices.getUser(id);
     if(user){
         logger.info(`Retrieving user ID ${id}`)
-        return res.status(StatusCodes.OK).send(
-            {
-                status:STATUS.SUCCESS,
-                user
-            }  
-        );
+        return res.status(StatusCodes.OK).send(user);
     }
     return res.status(StatusCodes.NOT_FOUND).send({
         status:STATUS.FAILURE,
